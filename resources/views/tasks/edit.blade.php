@@ -4,17 +4,23 @@
 
     <h1>id: {{ $task->id }} のメッセージ編集ページ</h1>
 
-    {!! Form::model($task, ['route' => ['tasks.update', $task->id], 'method' => 'put']) !!}
+    <div class="row">
+        <div class="col-xs-6">
+            {!! Form::model($task, ['route' => ['tasks.update', $task->id], 'method' => 'put']) !!}
 
-        {!! Form::label('status', 'ステータス:') !!}
-        {!! Form::text('status') !!}
-
-
-        {!! Form::label('content', 'メッセージ:') !!}
-        {!! Form::text('content') !!}
-
-        {!! Form::submit('更新') !!}
-
-    {!! Form::close() !!}
-    
+                <div class="form-group">
+                    {!! Form::label('status', 'ステータス:') !!}
+                    {!! Form::text('status') !!}
+                </div>
+        
+                <div class="form-group">
+                    {!! Form::label('content', 'メッセージ:') !!}
+                    {!! Form::text('content') !!}
+                </div>
+                
+                {!! Form::submit('更新', ['class' => 'btn btn-default']) !!}
+        
+            {!! Form::close() !!}
+        </div>
+    </div>
 @endsection
