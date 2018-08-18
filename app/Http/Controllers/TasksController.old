@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Controller;
-
 use App\Task;
 
 class TasksController extends Controller
@@ -17,20 +15,11 @@ class TasksController extends Controller
      */
     public function index()
     {
-        $data = [];
-        if (\Auth::check()) {
-            $user = \Auth::user();
-            $tasklist = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
+        $tasks = Task::all();
 
-            $data = [
-                'user' => $user,
-                'tasks' => $tasklist,
-            ];
-            $data += $this->counts($user);
-            return view('tasks.index', $data);
-        }else {
-            return view('welcome');
-        }
+        return view('tasks.index', [
+            'tasks' => $tasks,
+        ]);
     }
 
     /**
@@ -46,33 +35,34 @@ class TasksController extends Controller
             'task' => $task,
         ]);
     }
-    
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'content' => 'required|max:191',
+            'status' => 'required|max:10',
         ]);
-
+        
+        /*$task = new Task;
+        $task->status = $request->status;
+        $task->content = $request->content;
+        $task->save();*/
+        
         $request->user()->tasks()->create([
             'content' => $request->content,
-            'status' => $request->status,
+            'status' => $request->status,    
         ]);
 
-        return redirect('/');
-    }
-    
-    public function destroy($id)
-    {
-        $tasklist = \App\Task::find($id);
 
-        if (\Auth::id() === $tasklist->user_id) {
-            $tasklist->delete();
-        }
-
-        return redirect('/');
+        return redirect('/tasks');
     }
 
-        /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -125,6 +115,17 @@ class TasksController extends Controller
         return redirect('/');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $task = Task::find($id);
+        $task->delete();
+
+        return redirect('/');
+    }
 }
-
-

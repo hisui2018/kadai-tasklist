@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h1>タスク管理メッセージ新規作成ページ</h1>
+    <h1>タスク管理新規作成ページ</h1>
 
     @if (count($errors) > 0)
         <ul>
@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('content', 'メッセージ:') !!}
+                    {!! Form::label('content', 'タスク:') !!}
                     {!! Form::text('content', null, ['class' => 'form-control']) !!}
                 </div>
 
