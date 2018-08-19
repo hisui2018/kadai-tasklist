@@ -41,10 +41,15 @@ class TasksController extends Controller
     public function create()
     {
         $task = new Task;
-
-        return view('tasks.create', [
-            'task' => $task,
-        ]);
+        $tasklist = \App\Task::find($id);
+        
+        if (\Auth::id() === $tasklist->user_id){
+            return view('tasks.create', [
+                'task' => $task,
+            ]);
+        }else{
+              return redirect('/');
+        }
     }
     
     public function store(Request $request)
@@ -81,10 +86,15 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
-
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
+        $tasklist = \App\Task::find($id);
+        
+        if (\Auth::id() === $tasklist->user_id){
+            return view('tasks.show', [
+                'task' => $task,
+            ]);
+        }else{
+            return redirect('/');
+        }
         
         return redirect('/tasks');
     }
@@ -98,10 +108,15 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::find($id);
-
-        return view('tasks.edit', [
-            'task' => $task,
-        ]);
+        $tasklist = \App\Task::find($id);
+        
+        if (\Auth::id() === $tasklist->user_id){
+            return view('tasks.edit', [
+                'task' => $task,
+            ]);
+        }else{
+            return redirect('/');
+        }
     }
 
     /**
